@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>영화 검색 가즈아</title>
 
-    <!-- css 링크 거는 법 -->
+    <!-- css 링크 -->
     <link rel="stylesheet" href="movie.css">
-  
+    
 </head>
 <body>
-    <div id="movie-container">
 
-        <div id="movie-card">
-            <h3 id="movie-title">영화 제목</h3>
-            <img id="movie-image">영화 이미지</img>
-            <p id="movie-info">영화 정보</p>
+    <div class="navbar">
+        <div class="container">
+          <h1>영화 검색</h1>
+          <!-- 검색 입력란과 버튼 -->
+          <input type="text" id="searchInput" placeholder="영화 검색" />
+          <button id="searchButton">검색</button>
         </div>
+      </div>
+  
+      <div class="container">
+        <div id="movieList" class="movie-list"></div>
+          <!-- 영화 목록 표시 영역 -->
+      </div>
+  
 
-    </div>
 </body>
 
 <!-- js 링크 거는 법 -->
