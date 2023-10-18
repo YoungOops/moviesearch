@@ -58,78 +58,100 @@
 //     }
 
     // API를 호출할 때 사용할 영화 데이터 서비스의 API 키를 설정
-    const apiKey = "1d40e2072aaf4235f086cfb3889ef569";
+const apiKey = "1d40e2072aaf4235f086cfb3889ef569";
 
     // HTML 요소 가져오기
-    const searchInput = document.getElementById("searchInput");
-    const searchButton = document.getElementById("searchButton");
-    const movieList = document.getElementById("movieList");
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const movieList = document.getElementById("movieList");
 
-    // 검색 버튼 클릭 이벤트 리스너 추가
-    searchButton.addEventListener("click", () => searchMoviesByKeyword(searchInput.value));
+   // 검색 버튼 클릭 이벤트 리스너 추가
+searchButton.addEventListener("click", () => {
+  const keyword = searchInput.value;
+  searchMoviesByKeyword(keyword);
+});
 
-    // 검색 입력란 Enter 키 이벤트 처리
-    searchInput.addEventListener("keypress", (event) => {
-      if (event.key === "Enter") {
-        searchMoviesByKeyword(searchInput.value);
-      }
-    });
+searchInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    const keyword = searchInput.value;
+    searchMoviesByKeyword(keyword);
+  }
+});
 
-    // 페이지 로딩 시 초기 영화 목록 표시
-    window.addEventListener("load", () => {
-      searchMoviesByKeyword("");
-    });
+   // 페이지 로딩 시 초기 영화 목록 표시
+window.addEventListener("load", () => {
+  // 초기화면에는 검색어를 비워 놓습니다.
+  searchMoviesByKeyword("");
+});
 
-    // 키워드로 영화 검색 및 표시
-    function searchMoviesByKeyword(keyword) {
-      movieList.innerHTML = "";
+ // 키워드로 영화 검색 및 표시
+function searchMoviesByKeyword(keyword) {
+  movieList.innerHTML = "";
 
-      fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=35`
-      ) // 35는 코미디 장르의 ID입니다.
-        .then((response) => response.json())
-        .then((data) => {
-          const movieList = data.results;
-
-          for (let i = 0; i < movieList.length; i += 3) {
-            const movieGroup = movieList.slice(i, i + 3);
-            createMovieRow(movieGroup);
-          }
-        })
-        .catch((error) => {
-          console.error("에러:", error);
-        });
-    }
+  if (keyword.trim() === "") {
+    // 키워드가 공백일 경우 코미디 영화를 표시
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=35`
+    )// 35는 코미디 장르의 ID입니다.
+      .then((response) => response.json())
+      .then((data) => {
+        const movieList = data.results;
+        for (let i = 0; i < movieList.length; i += 3) {
+          const movieGroup = movieList.slice(i, i + 3);
+          createMovieRow(movieGroup);
+        }
+      })
+      .catch((error) => {
+        console.error("에러:", error);
+      });
+  } else {
+    // 검색어를 사용하여 영화 검색
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${keyword}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const movieList = data.results;
+        for (let i = 0; i < movieList.length; i += 3) {
+          const movieGroup = movieList.slice(i, i + 3);
+          createMovieRow(movieGroup);
+        }
+      })
+      .catch((error) => {
+        console.error("에러:", error);
+      });
+  }
+}
 
     // 영화 카드 생성 및 표시 함수
-    function createMovieRow(movieGroup) {
-      const row = document.createElement("div");
-      row.classList.add("movie-row");
+function createMovieRow(movieGroup) {
+  const row = document.createElement("div");
+  row.classList.add("movie-row");
 
-      movieGroup.forEach((movie) => {
-        const card = document.createElement("div");
-        card.classList.add("movie-card");
+  movieGroup.forEach((movie) => {
+    const card = document.createElement("div");
+    card.classList.add("movie-card");
 
-        const title = document.createElement("div");
-        title.classList.add("movie-title");
-        title.innerText = movie.title;
-        card.appendChild(title);
+    const title = document.createElement("div");
+    title.classList.add("movie-title");
+    title.innerText = movie.title;
+    card.appendChild(title);
 
-        const image = document.createElement("img");
-        image.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-        card.appendChild(image);
+    const image = document.createElement("img");
+    image.src = "https://image.tmdb.org/t/p/w500" + movie.poster_path;
+    card.appendChild(image);
 
-        const overview = document.createElement("div");
-        overview.classList.add("movie-overview");
-        overview.innerText = movie.overview;
-        card.appendChild(overview);
+    const overview = document.createElement("div");
+    overview.classList.add("movie-overview");
+    overview.innerText = movie.overview;
+    card.appendChild(overview);
 
-        card.addEventListener("click", () => {
-          alert(`선택한 영화 ID: ${movie.id}`);
-        });
+    card.addEventListener("click", () => {
+      alert(`선택한 영화 ID: ${movie.id}`);
+    });
 
-        row.appendChild(card);
-      });
+    row.appendChild(card);
+  });
 
-      movieList.appendChild(row);
-    }
+  movieList.appendChild(row);
+}
