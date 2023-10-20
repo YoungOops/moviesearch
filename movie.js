@@ -1,76 +1,25 @@
+// 내배캠에서 시킨 것
 // const options = {
 //     method: 'GET',
 //     headers: {
 //       accept: 'application/json',
-//       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0OWFhNTcxMjUwMjAwZGFkZmQyNGIzYmQyNGMzNzU1ZiIsInN1YiI6IjY1MmY0NDk0ZWE4NGM3MDBhZWY0YWQxZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.z0256uYeUXzk9kL0zAHc4r9nsqgTAcZa3Kw5tXUX7Ek'
+//       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZDQwZTIwNzJhYWY0MjM1ZjA4NmNmYjM4ODllZjU2OSIsInN1YiI6IjY1MmY2NTdjMGNiMzM1MTZmZWM5ZTc2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hcY72thbhWcl-T2PtLjZyBMRfyPjnf554i-7OEIiRUw'
 //     }
 //   };
 
-//   fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
-//     .then(response => response.json())
-//     .then(response => {
-  
-//       //  console.log(response); 
-//        getResults(response);
-  
-//       })
-//     .catch(err => console.error(err));
-  
-//     // 결과 전체
-//     function getResults(response) {
-//       let results = response.results;
-//       // console.log(response.results);
-//       results.forEach(e => {
-//           getMovie(e);
-//       });
-  
-//       // for(let i = 0; i<results.length; i++) {
-//       //     getMovie(results[i]);
-//       // }
-      
-//       // getMovie(results[0]);
-//     }
-  
-//     // 영화 하나의 데이타 출력
-//     function getMovie(data) {
-//       const container = document.getElementById("movie-container");
-  
-//       console.log(data);
-  
-//       const card = document.createElement("div");
-//       card.classList.add("movie-card");
-  
-//       const title = document.createElement("div");
-//       title.classList.add("movie-title");
-//       title.innerText = data.original_title;
-//       card.appendChild(title);
-  
-//       const image = document.createElement("img");
-//       image.style.width = "300px";
-//       image.src = "https://image.tmdb.org/t/p/original/" + data.poster_path;
-//       card.appendChild(image);
-  
-//       const info = document.createElement("div");
-//       card.appendChild(info);
-//       info.innerText = data.overview;
-  
-//       container.appendChild(card);
-//     }
-
-    // API를 호출할 때 사용할 영화 데이터 서비스의 API 키를 설정
+// API 키 및 필요한 요소들을 변수로 저장
 const apiKey = "1d40e2072aaf4235f086cfb3889ef569";
-
-    // HTML 요소 가져오기
 const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
 const movieList = document.getElementById("movieList");
 
-   // 검색 버튼 클릭 이벤트 리스너 추가
+// 검색 버튼 클릭 이벤트 리스너
 searchButton.addEventListener("click", () => {
   const keyword = searchInput.value;
   searchMoviesByKeyword(keyword);
 });
 
+// Enter 키 입력 시 검색 이벤트 처리
 searchInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     const keyword = searchInput.value;
@@ -78,13 +27,13 @@ searchInput.addEventListener("keypress", (event) => {
   }
 });
 
-   // 페이지 로딩 시 초기 영화 목록 표시
+// 페이지 로드 시 초기 영화 목록을 표시
 window.addEventListener("load", () => {
-  // 초기화면에는 검색어를 비워 놓습니다.
+  // 초기화면에는 검색어를 비워서 코미디 장르의 영화를 표시합니다.
   searchMoviesByKeyword("");
 });
 
- // 키워드로 영화 검색 및 표시
+// 키워드에 따라 영화 검색 및 목록 생성
 function searchMoviesByKeyword(keyword) {
   movieList.innerHTML = "";
 
@@ -92,7 +41,7 @@ function searchMoviesByKeyword(keyword) {
     // 키워드가 공백일 경우 코미디 영화를 표시
     fetch(
       `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=35`
-    )// 35는 코미디 장르의 ID입니다.
+    )
       .then((response) => response.json())
       .then((data) => {
         const movieList = data.results;
@@ -123,7 +72,7 @@ function searchMoviesByKeyword(keyword) {
   }
 }
 
-    // 영화 카드 생성 및 표시 함수
+// 영화 그룹을 포함한 행 생성
 function createMovieRow(movieGroup) {
   const row = document.createElement("div");
   row.classList.add("movie-row");
@@ -146,6 +95,7 @@ function createMovieRow(movieGroup) {
     overview.innerText = movie.overview;
     card.appendChild(overview);
 
+    // 영화 카드 클릭 시 영화 ID를 알림으로 표시
     card.addEventListener("click", () => {
       alert(`선택한 영화 ID: ${movie.id}`);
     });
