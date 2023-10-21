@@ -1,0 +1,46 @@
+/* 가즈아!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> */
+
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+
+* {
+    font-family: 'Permanent Marker', cursive;
+}
+
+body {
+    background-color:rgb(150, 178, 108);
+}
+
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: #f15959;
+    text-align: center;
+}
+
+#cardContainer {
+    background-position: center;
+    background-size: cover;
+    margin-top: 100px;
+/* 이거 했더니 갑자기 3줄 됨 아래부터 알아보기*/   
+    display: flex;  
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.movieCard {
+    background-color:rgb(20, 57, 35);
+    width: 400px;
+    height: 500px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 15px;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
