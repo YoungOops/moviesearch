@@ -7,24 +7,32 @@ const options = {
   };
 
   fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
+//fetch 함수를 사용 URL에서 데이터 가져옴 'top_rated' 목록 영화 정보를 영어로 받아옴 페이지 번호는 1페이지를 요청
+// options은 fetch 요청에 대한 구성을 나타내는 변수로, 아마도 이전에 정의되었을 것으로 추측
     .then(response => response.json())
+// 이 부분은 fetch 함수의 결과로 받아온 HTTP 응답을 JSON 형식으로 파싱하는 역할을 합니다.(파싱 구문분석)
+// .then()은 프라미스 체인의 일부로서, 이전에 반환된 프라미스에 대한 처리를 나타냅니다.
     .then(response => {
-        console.log(response);
-        let results = response.results;
-        results.forEach(data => {//배열 요소 하나하나 돌면서 배열 요소 -> data 암튼 하는거
-            createCard(data);
+
+        // console.log(response); //파싱 된 json 데이터 출력
+        let results = response.results;//JSON 데이터에서 'results' 속성을 추출 ->'results' 변수에 할당이 속성은 영화 정보가 포함된 배열 가리킴
+        results.forEach(data => {//'results' 각 배열 요소 반복 루프 'data' 변수로 참조 암튼 하는거
+            createCard(data); //'createCard' 함수를 호출하여 'data'를 전달
+            // 이 함수는 아마도 'data'를 사용하여 영화 정보 카드를 생성하는 역할을 할 것입니다.
         });
-        console.log(map);
-        // createCard(results[0]); // 리졀츠에 배열 0번째
+        // console.log(map);
+        // // createCard(results[0]); // 리졀츠에 배열 0번째
     })
     .catch(err => console.error(err));3
+    //catch 메서드-> then 메서드 체인에서 발생한 오류를 처리
+    //console.error를 사용하여 오류 메시지를 콘솔에 출력
 
-    const map = new Map(); //맵 선언함 타이틀 키값 밸류는 카드를 넣을 것임
-
-//map 이라는 메서드가 따로 있고, new map은 일급객체가 있다고함 나중에 알아볼것 ********
+    const map = new Map(); //맵 선언함 Key값:title value값:card 넣을 것임
 
     const container= document.getElementById("cardContainer");
-    let createCard = (data) => {
+    //HTML에서 id가 "cardContainer"인 요소를 찾아서 container 변수에 할당
+    //이 요소는 동적으로 생성된 카드를 포함하는 컨테이너 역할
+    let createCard = (data) => { //createCard라는 함수를 정의 ->영화 데이터를 받아와서 카드를 생성하는 역할
         const card = document.createElement("div"); // 카드를 만들자
         card.classList.add("movieCard"); //클래스 리스트
         container.appendChild(card); // 컨테이너 만든 위치에 자식으로 카드를 넣는다. 
